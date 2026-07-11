@@ -37,8 +37,8 @@ Copy‑paste friendly. Replace `myorg` with any alias you like — it's just a l
 
 ```bash
 # 1. Clone this repo and move into it
-git clone https://github.com/<your-github-username>/flow-error-logger.git
-cd flow-error-logger
+git clone https://github.com/PriceFB/Flow-Error-Logger.git
+cd Flow-Error-Logger
 
 # 2. Authorize YOUR OWN Salesforce org (opens a browser login)
 #    Use --instance-url https://test.salesforce.com for a sandbox.
@@ -58,23 +58,24 @@ That's it — you can now add the **Log Flow Error** action to any Flow fault pa
 
 ### Option B — Unlocked package (2GP)
 
-Publish it once as an unlocked package, then install by URL in any org.
+Prefer a one-click install? Publish it once from a Dev Hub as an unlocked package, then install it by Id (or share the install URL) in any org. Replace `myDevHub` with your Dev Hub alias; the `04t…` Id and version alias below are produced by the commands themselves.
 
 ```bash
-# 1. Create the package (one time, from a Dev Hub)
-sf package create --name "Flow Error Logger" --package-type Unlocked --path force-app --target-dev-hub <devhub-alias>
+# 1. Create the package (one time)
+sf package create --name "Flow Error Logger" --package-type Unlocked --path force-app --target-dev-hub myDevHub
 
-# 2. Create a version
-sf package version create --package "Flow Error Logger" --installation-key-bypass --wait 20 --code-coverage --target-dev-hub <devhub-alias>
+# 2. Create a version — the CLI prints a package version Id (starts with 04t) and a version alias
+sf package version create --package "Flow Error Logger" --installation-key-bypass --wait 20 --code-coverage --target-dev-hub myDevHub
 
-# 3. Promote it when you're happy with it
-sf package version promote --package "Flow Error Logger@x.y.z-n" --target-dev-hub <devhub-alias>
+# 3. Promote the version so it can be installed in any org (example alias shown)
+sf package version promote --package "Flow Error Logger@1.0.0-1" --target-dev-hub myDevHub
 
-# 4. Install in any org
-sf package install --package "04t..." --wait 10 --target-org <your-org-alias>
+# 4. Install the 04t Id from step 2 into your target org
+sf package install --package 04tXXXXXXXXXXXXXXXX --wait 10 --target-org myorg
 ```
 
-Or share the install URL: `https://login.salesforce.com/packaging/installPackage.apexp?p0=<04t-package-version-id>`
+Or share the install URL (swap in the real `04t…` Id from step 2):
+`https://login.salesforce.com/packaging/installPackage.apexp?p0=04tXXXXXXXXXXXXXXXX`
 
 After installing, assign the **Flow Error Logger Admin** permission set.
 
@@ -159,8 +160,8 @@ sf data query --query "SELECT Name, Flow_API_Name__c, Severity__c, Error_Message
 
 Designed, built, tested, and documented by me as an original, reusable open-source project. If this saved you some debugging time, a ⭐ on the repo is always appreciated.
 
-- GitHub: [@your-github-username](https://github.com/your-github-username)
-- LinkedIn: [Jonathan Leyva](https://www.linkedin.com/in/your-linkedin)
+- GitHub: [@PriceFB](https://github.com/PriceFB)
+- LinkedIn: [Jonathan Leyva](https://www.linkedin.com/in/leyvajonathan/)
 
 > _Built by Jonathan Leyva · Feedback, issues, and pull requests welcome._
 
