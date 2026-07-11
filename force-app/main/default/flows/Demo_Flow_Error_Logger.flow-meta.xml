@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>Demonstrates the Flow Error Logger fault-path pattern. Deliberately triggers a DML fault (creating a Contact with no Last Name) and, on the fault connector, calls the Log Flow Error invocable action to create a Flow_Error_Log__c record.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Context_Payload</name>
+        <dataType>String</dataType>
+        <expression>"Demo fault triggered at " &amp; TEXT({!$Flow.CurrentDateTime})</expression>
+    </formulas>
+    <interviewLabel>Demo Flow Error Logger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Demo Flow Error Logger</label>
+    <processType>AutoLaunchedFlow</processType>
+    <actionCalls>
+        <name>Log_Flow_Error</name>
+        <label>Log Flow Error</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <actionName>FlowErrorLogger</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>flowApiName</name>
+            <value>
+                <stringValue>Demo_Flow_Error_Logger</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>errorMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>severity</name>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>elementName</name>
+            <value>
+                <stringValue>Trigger_Fault</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>context</name>
+            <value>
+                <elementReference>Context_Payload</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <recordCreates>
+        <name>Trigger_Fault</name>
+        <label>Trigger Fault</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <faultConnector>
+            <targetReference>Log_Flow_Error</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>FirstName</field>
+            <value>
+                <stringValue>Flow Error Logger Demo</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Trigger_Fault</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+</Flow>

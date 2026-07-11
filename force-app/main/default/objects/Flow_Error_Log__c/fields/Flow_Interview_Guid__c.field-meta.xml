@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Flow_Interview_Guid__c</fullName>
+    <label>Flow Interview GUID</label>
+    <description>Optional Flow interview GUID used to correlate this log with a specific Flow run for tracing.</description>
+    <inlineHelpText>Optional. The Flow interview GUID, useful for correlating multiple logs from the same run.</inlineHelpText>
+    <type>Text</type>
+    <length>255</length>
+    <required>false</required>
+    <externalId>false</externalId>
+    <unique>false</unique>
+</CustomField>

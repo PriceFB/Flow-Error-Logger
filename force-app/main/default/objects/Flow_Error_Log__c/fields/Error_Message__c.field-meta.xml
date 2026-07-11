@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Error_Message__c</fullName>
+    <label>Error Message</label>
+    <description>The captured fault message from the Flow, giving the human-readable reason the automation failed.</description>
+    <inlineHelpText>The full fault message captured from the Flow. Pass {!$Flow.FaultMessage} from the fault connector.</inlineHelpText>
+    <type>LongTextArea</type>
+    <length>32768</length>
+    <visibleLines>5</visibleLines>
+</CustomField>

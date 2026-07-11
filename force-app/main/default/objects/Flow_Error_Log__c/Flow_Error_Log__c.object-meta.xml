@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Flow Error Log</label>
+    <pluralLabel>Flow Error Logs</pluralLabel>
+    <description>Stores structured error records captured from Flow fault paths so admins and developers have queryable, human-readable visibility into Flow failures.</description>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+    <enableActivities>false</enableActivities>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <nameField>
+        <label>Log Number</label>
+        <type>AutoNumber</type>
+        <displayFormat>FEL-{00000}</displayFormat>
+        <startingNumber>1</startingNumber>
+    </nameField>
+</CustomObject>
