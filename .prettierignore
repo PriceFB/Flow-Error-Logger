@@ -9,3 +9,7 @@
 .vscode
 
 coverage/
+
+# Auto-generated / not for formatting
+package-lock.json
+flow-error-logger.md

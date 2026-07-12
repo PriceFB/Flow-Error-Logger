@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Severity__c</fullName>
     <label>Severity</label>
-    <description>Classifies the impact of the logged error so teams can triage and prioritize failures.</description>
-    <inlineHelpText>How serious the error is. Defaults to Error when not supplied.</inlineHelpText>
+    <description
+  >Classifies the impact of the logged error so teams can triage and prioritize failures.</description>
+    <inlineHelpText
+  >How serious the error is. Defaults to Error when not supplied.</inlineHelpText>
     <type>Picklist</type>
     <valueSet>
         <restricted>true</restricted>

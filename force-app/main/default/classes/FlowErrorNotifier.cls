@@ -6,9 +6,9 @@
  * and never hardcodes any endpoint.
  */
 public interface FlowErrorNotifier {
-    /**
-     * Called after logs are successfully inserted.
-     * @param logs The Flow_Error_Log__c records that were just created.
-     */
-    void notify(List<Flow_Error_Log__c> logs);
+  /**
+   * Called after logs are successfully inserted.
+   * @param logs The Flow_Error_Log__c records that were just created.
+   */
+  void notify(List<Flow_Error_Log__c> logs);
 }

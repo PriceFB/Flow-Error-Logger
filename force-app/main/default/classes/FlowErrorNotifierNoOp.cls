@@ -5,8 +5,8 @@
  * notifications. See the README "Extension points" section.
  */
 public with sharing class FlowErrorNotifierNoOp implements FlowErrorNotifier {
-    public void notify(List<Flow_Error_Log__c> logs) {
-        // No-op by design. Consumers provide their own notifier implementation.
-        return;
-    }
+  public void notify(List<Flow_Error_Log__c> logs) {
+    // No-op by design. Consumers provide their own notifier implementation.
+    return;
+  }
 }

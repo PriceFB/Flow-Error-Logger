@@ -2,6 +2,7 @@
 
 > A drop-in Salesforce package that captures Flow fault-path errors into a structured, queryable custom object — so your Flows stop failing silently.
 
+[![CI](https://github.com/PriceFB/Flow-Error-Logger/actions/workflows/ci.yml/badge.svg)](https://github.com/PriceFB/Flow-Error-Logger/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Salesforce API](https://img.shields.io/badge/Salesforce%20API-v67.0-00A1E0.svg)](https://developer.salesforce.com)
 [![Apex Coverage](https://img.shields.io/badge/Apex%20coverage-97%25-brightgreen.svg)](#tests)
@@ -20,8 +21,8 @@ Salesforce Flows fail silently. When a fault path is hit, there's no standard, q
 
 > Images live in [`docs/screenshots/`](./docs/screenshots). Add your own captures there.
 
-| Log record | Demo flow |
-|---|---|
+| Log record                                                             | Demo flow                                                 |
+| ---------------------------------------------------------------------- | --------------------------------------------------------- |
 | ![Flow Error Log record](./docs/screenshots/flow-error-log-record.png) | ![Demo flow fault path](./docs/screenshots/demo-flow.png) |
 
 ## Install
@@ -84,10 +85,10 @@ After installing, assign the **Flow Error Logger Admin** permission set.
 1. In your Flow, add a **fault connector** from any element that can fail (Get/Create/Update/Delete Records, an Apex action, a callout, etc.).
 2. On the fault path, add an **Action** and search for **Log Flow Error**.
 3. Map the inputs:
-   - **Flow API Name** *(required)* → your flow's API name (e.g. `Account_Onboarding`).
-   - **Error Message** *(required)* → `{!$Flow.FaultMessage}`.
-   - **Severity** *(optional)* → `Info`, `Warning`, `Error`, or `Critical` (defaults to `Error`).
-   - **Element Name / Record Id / Flow Interview GUID / Context** *(optional)* → any tracing detail you have (e.g. `{!$Flow.CurrentDateTime}` in Context).
+   - **Flow API Name** _(required)_ → your flow's API name (e.g. `Account_Onboarding`).
+   - **Error Message** _(required)_ → `{!$Flow.FaultMessage}`.
+   - **Severity** _(optional)_ → `Info`, `Warning`, `Error`, or `Critical` (defaults to `Error`).
+   - **Element Name / Record Id / Flow Interview GUID / Context** _(optional)_ → any tracing detail you have (e.g. `{!$Flow.CurrentDateTime}` in Context).
 4. Leave the action's output unmapped (or capture the returned log Ids). The action **never throws**, so it can't make your flow's failure worse.
 5. Save and activate. When the fault fires, a `Flow_Error_Log__c` record appears under the **Flow Error Logs** tab.
 
@@ -95,17 +96,17 @@ A working example ships in this package: the **Demo Flow Error Logger** flow del
 
 ## Field reference — `Flow_Error_Log__c`
 
-| Field | API Name | Type | Notes |
-|---|---|---|---|
-| Log Number | `Name` | Auto Number | Format `FEL-{00000}` |
-| Flow API Name | `Flow_API_Name__c` | Text(255) | API name of the failing flow |
-| Error Message | `Error_Message__c` | Long Text(32768) | Captured fault message (truncated safely) |
-| Severity | `Severity__c` | Picklist | `Info` / `Warning` / `Error` (default) / `Critical` |
-| Record Id | `Record_Id__c` | Text(18) | Optional record the flow was operating on |
-| Flow Interview GUID | `Flow_Interview_Guid__c` | Text(255) | Optional interview GUID for tracing |
-| Element Name | `Element_Name__c` | Text(255) | Optional element/step that faulted |
-| Running User | `Running_User__c` | Lookup(User) | Defaults to the current user |
-| Context | `Context__c` | Long Text(32768) | Optional JSON/context payload (truncated safely) |
+| Field               | API Name                 | Type             | Notes                                               |
+| ------------------- | ------------------------ | ---------------- | --------------------------------------------------- |
+| Log Number          | `Name`                   | Auto Number      | Format `FEL-{00000}`                                |
+| Flow API Name       | `Flow_API_Name__c`       | Text(255)        | API name of the failing flow                        |
+| Error Message       | `Error_Message__c`       | Long Text(32768) | Captured fault message (truncated safely)           |
+| Severity            | `Severity__c`            | Picklist         | `Info` / `Warning` / `Error` (default) / `Critical` |
+| Record Id           | `Record_Id__c`           | Text(18)         | Optional record the flow was operating on           |
+| Flow Interview GUID | `Flow_Interview_Guid__c` | Text(255)        | Optional interview GUID for tracing                 |
+| Element Name        | `Element_Name__c`        | Text(255)        | Optional element/step that faulted                  |
+| Running User        | `Running_User__c`        | Lookup(User)     | Defaults to the current user                        |
+| Context             | `Context__c`             | Long Text(32768) | Optional JSON/context payload (truncated safely)    |
 
 ## Design notes
 
@@ -120,7 +121,7 @@ Want notifications? Implement the `FlowErrorNotifier` interface — no core chan
 
 ```apex
 public interface FlowErrorNotifier {
-    void notify(List<Flow_Error_Log__c> logs);
+  void notify(List<Flow_Error_Log__c> logs);
 }
 ```
 
@@ -153,6 +154,21 @@ sf data query --query "SELECT Name, Flow_API_Name__c, Severity__c, Error_Message
 ## Tests
 
 `FlowErrorLoggerTest` covers single + bulk (200-record) inserts, severity defaulting/validation, running-user defaulting, safe truncation of oversized text, swallowed insert failures, the null/empty input paths, and the notifier extension point (including a throwing notifier). Coverage on `FlowErrorLogger` is **97%**.
+
+Run the Apex tests yourself against any org:
+
+```bash
+sf apex run test --class-names FlowErrorLoggerTest --result-format human --code-coverage --target-org myorg
+```
+
+## Continuous integration
+
+Every push and pull request to `main` runs a [GitHub Actions workflow](./.github/workflows/ci.yml) that:
+
+- verifies formatting with **Prettier** (which also parses every Apex class, so a syntax error fails the build), and
+- runs **ESLint**.
+
+These checks run fully offline — no org or credentials required — so anyone can fork the repo and get a green build. Apex tests execute against a Salesforce org (see above); the 97% coverage figure comes from running `FlowErrorLoggerTest` in a real org.
 
 ## Author
 
